@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A66B8B4820656AE40050D391 /* BeastListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66B8B4720656AE40050D391 /* BeastListVC.swift */; };
 		A66B8B4A206574790050D391 /* AddVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66B8B49206574790050D391 /* AddVC.swift */; };
+		A6A9AE3920659B7700055AC1 /* BeastedListTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6A9AE3820659B7700055AC1 /* BeastedListTVC.swift */; };
 		A6D4B8142065809900425901 /* BeastListTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D4B8132065809900425901 /* BeastListTVC.swift */; };
+		A6D4B81620658C8C00425901 /* VerySpecialCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D4B81520658C8C00425901 /* VerySpecialCell.swift */; };
 		A6E91F98206563A2004E5A3F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E91F97206563A2004E5A3F /* AppDelegate.swift */; };
 		A6E91F9D206563A2004E5A3F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6E91F9B206563A2004E5A3F /* Main.storyboard */; };
 		A6E91FA0206563A2004E5A3F /* beast_list.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A6E91F9E206563A2004E5A3F /* beast_list.xcdatamodeld */; };
@@ -37,9 +38,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		A66B8B4720656AE40050D391 /* BeastListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeastListVC.swift; sourceTree = "<group>"; };
 		A66B8B49206574790050D391 /* AddVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddVC.swift; sourceTree = "<group>"; };
+		A6A9AE3820659B7700055AC1 /* BeastedListTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeastedListTVC.swift; sourceTree = "<group>"; };
 		A6D4B8132065809900425901 /* BeastListTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeastListTVC.swift; sourceTree = "<group>"; };
+		A6D4B81520658C8C00425901 /* VerySpecialCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerySpecialCell.swift; sourceTree = "<group>"; };
 		A6E91F94206563A2004E5A3F /* beast_list.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = beast_list.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6E91F97206563A2004E5A3F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A6E91F9C206563A2004E5A3F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -104,10 +106,11 @@
 			isa = PBXGroup;
 			children = (
 				A6D4B8132065809900425901 /* BeastListTVC.swift */,
+				A6A9AE3820659B7700055AC1 /* BeastedListTVC.swift */,
 				A66B8B49206574790050D391 /* AddVC.swift */,
 				A6E91F97206563A2004E5A3F /* AppDelegate.swift */,
 				A6E91F9B206563A2004E5A3F /* Main.storyboard */,
-				A66B8B4720656AE40050D391 /* BeastListVC.swift */,
+				A6D4B81520658C8C00425901 /* VerySpecialCell.swift */,
 				A6E91FA1206563A2004E5A3F /* Assets.xcassets */,
 				A6E91FA3206563A2004E5A3F /* LaunchScreen.storyboard */,
 				A6E91FA6206563A2004E5A3F /* Info.plist */,
@@ -270,9 +273,10 @@
 			files = (
 				A6D4B8142065809900425901 /* BeastListTVC.swift in Sources */,
 				A66B8B4A206574790050D391 /* AddVC.swift in Sources */,
-				A66B8B4820656AE40050D391 /* BeastListVC.swift in Sources */,
 				A6E91FA0206563A2004E5A3F /* beast_list.xcdatamodeld in Sources */,
+				A6A9AE3920659B7700055AC1 /* BeastedListTVC.swift in Sources */,
 				A6E91F98206563A2004E5A3F /* AppDelegate.swift in Sources */,
+				A6D4B81620658C8C00425901 /* VerySpecialCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

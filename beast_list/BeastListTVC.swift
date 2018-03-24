@@ -20,10 +20,16 @@ class BeastListTVC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
-        //        seedData()
+//        seedData()
         fetchAll()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchAll()
+        tableView.reloadData()
+    }
+
     func seedData(){
         let beastsArr = ["Laundry", "Swim", "fly", "Groceries"]
         for b in beastsArr {
@@ -57,7 +63,6 @@ class BeastListTVC: UITableViewController {
             let item = result[indexPath.row]
             addVC.item = item.desc!
             addVC.indexPath = indexPath
-            print( item, indexPath )
         }
     }
 
@@ -85,32 +90,32 @@ class BeastListTVC: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "verySpecialCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "verySpecialCell", for: indexPath) as! VerySpecialCell
         
         if let data = result[indexPath.row].desc {
-            cell.textLabel?.text = data
+            cell.beastLabel.text = data
         }
+        cell.delegate = self
+        cell.index = indexPath.row
         
-
+        if result[indexPath.row].isBeasted == true {
+            cell.isHidden = true
+        }
         return cell
+    }
+        
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        var cellHeight: CGFloat
+        cellHeight = 100.0
+        if result[indexPath.row].isBeasted == true {
+            cellHeight = 0.0
+        }
+        return cellHeight
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("selected")
         performSegue( withIdentifier: "AddSegue", sender: indexPath )
     }
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
 protocol AddVCDelegate: class {
@@ -122,7 +127,6 @@ extension BeastListTVC: AddVCDelegate {
     func itemSaved(by controller: AddVC, with text: String, at indexPath: NSIndexPath? ){
         if let i = indexPath {
             result[i.row].desc = text
-            
         } else {
             let item = NSEntityDescription.insertNewObject( forEntityName: "Beast", into: managedObjectContext ) as! Beast
             item.desc = text
@@ -144,3 +148,12 @@ extension BeastListTVC: AddVCDelegate {
     }
 }
 
+extension BeastListTVC: VerySpecialCellDelegate {
+    func setBeastedToTrue( index: Int ) {
+        let beastedItem = result[index]
+        beastedItem.isBeasted = true
+        beastedItem.beastedDate = Date()
+        appDelegate.saveContext()
+        tableView.reloadData()
+    }
+}

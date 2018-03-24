@@ -25,7 +25,6 @@ class AddVC: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
-    
     @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {
         delegate?.cancelButtonPressed(by: self)
     }
@@ -34,16 +33,4 @@ class AddVC: UIViewController {
         let text = itemDescInputField.text!
         delegate?.itemSaved(by: self, with: text, at: indexPath)
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
