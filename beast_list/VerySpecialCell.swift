@@ -6,24 +6,22 @@
 //  Copyright © 2018 Ruslan Suvorov. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 protocol VerySpecialCellDelegate: class{
-    func setBeastedToTrue( index: Int )
+    func setBeastedToTrue( indexPath: IndexPath )
 }
 
 class VerySpecialCell: UITableViewCell {
     
     weak var delegate: VerySpecialCellDelegate?
     
-    @IBOutlet weak var beastButton: UIButton!
     @IBOutlet weak var beastLabel: UILabel!
     
-    var index = Int()
+    var indexPath: IndexPath!
     
     @IBAction func beastButtonPressed(_ sender: UIButton) {
-        delegate?.setBeastedToTrue( index: index )
+        delegate?.setBeastedToTrue( indexPath: indexPath )
     }
     
 

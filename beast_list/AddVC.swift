@@ -8,21 +8,28 @@
 
 import UIKit
 
-class AddVC: UIViewController {
+
+protocol AddVCDelegate: class {
+    func itemSaved(with text: String, at indexPath: IndexPath?)
+    func cancelButtonPressed (by controller: AddVC)
+}
+
+class AddVC: UIViewController, UITableViewDelegate {
     
     @IBOutlet weak var itemDescInputField: UITextField!
     
+    var child = ChildOfAddVC()
+
+    
     weak var delegate: AddVCDelegate?
+    
     var item: String?
-    var indexPath: NSIndexPath?
+    var indexPath: IndexPath?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        itemDescInputField.isHidden = true // PREVIOUSLY IMPLEMENTED SOLUTION. DID NOT WANT TO THROUGH THE CODE AWAY
         itemDescInputField.text = item
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
     
     @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {
@@ -30,7 +37,18 @@ class AddVC: UIViewController {
     }
     
     @IBAction func doneButtonPressed(_ sender: UIBarButtonItem) {
-        let text = itemDescInputField.text!
-        delegate?.itemSaved(by: self, with: text, at: indexPath)
+//        let text = itemDescInputField.text!
+        let text = child.itemDescInputFieldInTV.text!
+        delegate?.itemSaved(with: text, at: indexPath)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        child = segue.destination as! ChildOfAddVC
+        child.item = item
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+
 }

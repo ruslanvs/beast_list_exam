@@ -13,76 +13,49 @@ class BeastListTVC: UITableViewController {
     
     var result = [Beast]()
     
-    var managedObjectContext = ( UIApplication.shared.delegate as! AppDelegate ).persistentContainer.viewContext
-    var appDelegate = ( UIApplication.shared.delegate as! AppDelegate )
-
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.dataSource = self
-//        seedData()
-        fetchAll()
+        tableView.rowHeight = 100.0
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        fetchAll()
+    override func viewWillAppear(_ animated: Bool ) {
+        super.viewWillAppear( animated )
+        result = BeastModel.shared.getAll( whereIsBeastedIs: false )
         tableView.reloadData()
     }
 
-    func seedData(){
-        let beastsArr = ["Laundry", "Swim", "fly", "Groceries"]
-        for b in beastsArr {
-            let item = NSEntityDescription.insertNewObject(forEntityName: "Beast", into: managedObjectContext) as! Beast
-            item.desc = b
-            appDelegate.saveContext()
+    @IBAction func seedButtonPressed(_ sender: UIBarButtonItem) {
+        print( "seed button pressed" )
+        let beastsArr = ["Laundry", "Swim", "fly", "Groceries", "Laugh", "Jump"]
+        for desc in beastsArr {
+            BeastModel.shared.create(item: desc)
         }
-        fetchAll()
-    }
-    
-    func fetchAll(){
-        let request = NSFetchRequest<NSFetchRequestResult>( entityName: "Beast" )
-        do {
-            result = try managedObjectContext.fetch( request ) as! [Beast]
-        } catch {
-            print( error )
-        }
+        result = BeastModel.shared.getAll( whereIsBeastedIs: false )
+        tableView.reloadData()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (sender as? UIBarButtonItem) != nil {
-            let navigationController = segue.destination as! UINavigationController
-            let addVC = navigationController.topViewController as! AddVC
-            addVC.delegate = self
-        } else if (sender as? NSIndexPath) != nil {
-            let navigationController = segue.destination as! UINavigationController
-            let addVC = navigationController.topViewController as! AddVC
-            addVC.delegate = self
-            
-            let indexPath = sender as! NSIndexPath
+        
+        let navigationController = segue.destination as! UINavigationController
+        let addVC = navigationController.topViewController as! AddVC
+        addVC.delegate = self
+
+        if (sender as? IndexPath) != nil {
+            let indexPath = sender as! IndexPath
             let item = result[indexPath.row]
             addVC.item = item.desc!
             addVC.indexPath = indexPath
         }
-    }
+    } //>> check with Eli if segregating by type of button is the way to go. What if there were 2 different bar buttons?
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        
-        let item = result[indexPath.row]
-        managedObjectContext.delete(item)
-        appDelegate.saveContext()
-        
-        result.remove(at: indexPath.row)
+        BeastModel.shared.delete( result[indexPath.row] )
+        result.remove( at: indexPath.row )
         tableView.reloadData()
     }
 
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-    }
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -95,22 +68,11 @@ class BeastListTVC: UITableViewController {
         if let data = result[indexPath.row].desc {
             cell.beastLabel.text = data
         }
+        
         cell.delegate = self
-        cell.index = indexPath.row
+        cell.indexPath = indexPath
         
-        if result[indexPath.row].isBeasted == true {
-            cell.isHidden = true
-        }
         return cell
-    }
-        
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        var cellHeight: CGFloat
-        cellHeight = 100.0
-        if result[indexPath.row].isBeasted == true {
-            cellHeight = 0.0
-        }
-        return cellHeight
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -118,42 +80,35 @@ class BeastListTVC: UITableViewController {
     }
 }
 
-protocol AddVCDelegate: class {
-    func itemSaved(by controller: AddVC, with text: String, at indexPath: NSIndexPath?)
-    func cancelButtonPressed (by controller: AddVC)
-}
-
 extension BeastListTVC: AddVCDelegate {
-    func itemSaved(by controller: AddVC, with text: String, at indexPath: NSIndexPath? ){
+    func itemSaved(with text: String, at indexPath: IndexPath? ){
+        
         if let i = indexPath {
             result[i.row].desc = text
+            BeastModel.shared.saveContext()
         } else {
-            let item = NSEntityDescription.insertNewObject( forEntityName: "Beast", into: managedObjectContext ) as! Beast
-            item.desc = text
+            let item = BeastModel.shared.create(item: text)
             result.append( item )
-        }
-        
-        do {
-            try managedObjectContext.save()
-        } catch {
-            print (error)
         }
         
         tableView.reloadData()
         dismiss(animated: true, completion: nil)
     }
     
-    func cancelButtonPressed(by controller: AddVC) {
+    func cancelButtonPressed(by: AddVC) {
         dismiss(animated: true, completion: nil)
     }
 }
 
 extension BeastListTVC: VerySpecialCellDelegate {
-    func setBeastedToTrue( index: Int ) {
-        let beastedItem = result[index]
+    func setBeastedToTrue( indexPath: IndexPath ) {
+        let beastedItem = result[indexPath.row]
         beastedItem.isBeasted = true
         beastedItem.beastedDate = Date()
-        appDelegate.saveContext()
+        BeastModel.shared.saveContext()
+        result.remove(at: indexPath.row)
+//        result = BeastModel.shared.getAll( whereIsBeastedIs: false )
+        //        tableView.deleteRows(at: [indexPath], with: .automatic) //>> Eli: App often (but not always) crushes when "beasting" with animation. Perhaps some async callback is needed?
         tableView.reloadData()
     }
 }
