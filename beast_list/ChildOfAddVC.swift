@@ -9,7 +9,6 @@
 import UIKit
 
 class ChildOfAddVC: UITableViewController {
-    //>> Eli: review the impementation of embedded static tvc
     
     @IBOutlet weak var itemDescInputFieldInTV: UITextField!
 

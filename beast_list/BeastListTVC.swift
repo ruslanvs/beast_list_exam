@@ -46,7 +46,7 @@ class BeastListTVC: UITableViewController {
             addVC.item = item.desc!
             addVC.indexPath = indexPath
         }
-    } //>> check with Eli if segregating by type of button is the way to go. What if there were 2 different bar buttons?
+    }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         BeastModel.shared.delete( result[indexPath.row] )
@@ -108,7 +108,7 @@ extension BeastListTVC: VerySpecialCellDelegate {
         BeastModel.shared.saveContext()
         result.remove(at: indexPath.row)
 //        result = BeastModel.shared.getAll( whereIsBeastedIs: false )
-        //        tableView.deleteRows(at: [indexPath], with: .automatic) //>> Eli: App often (but not always) crushes when "beasting" with animation. Perhaps some async callback is needed?
-        tableView.reloadData()
+        tableView.deleteRows(at: [indexPath], with: .automatic) //>> Eli: App often (but not always) crushes when "beasting" with animation. Perhaps some async callback is needed?
+//        tableView.reloadData()
     }
 }
